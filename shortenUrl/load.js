@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const startButton = document.getElementById("start-button");
     const timerElement = document.getElementById("timer");
     const countdownMessage = document.getElementById("countdown-message");
-    let timeLeft = 5;
+    let timeLeft = 120;
 
     // Hàm để lấy giá trị của tham số từ URL
     function getQueryParam(param) {
