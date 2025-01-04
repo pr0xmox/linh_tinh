@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch Content</title>
+    <style>
+        #content {
+            white-space: pre-wrap;
+            border: 1px solid #ccc;
+            padding: 10px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fetch Content Directly</h1>
+    <div id="content">Loading...</div>
+
+    <script>
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        const url = getQueryParam('url');
+
+        if (url) {
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('content').textContent = data;
+                })
+                .catch(error => {
+                    document.getElementById('content').textContent = `Error: ${error.message}`;
+                });
+        } else {
+            document.getElementById('content').textContent = 'Missing URL parameter.';
+        }
+    </script>
+</body>
+</html>
