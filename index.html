@@ -3,45 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fetch Content</title>
-    <style>
-        #content {
-            white-space: pre-wrap;
-            border: 1px solid #ccc;
-            padding: 10px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-    </style>
+    <title>Fetch HTML String via Proxy</title>
 </head>
 <body>
-    <h1>Fetch Content Directly</h1>
-    <div id="content">Loading...</div>
+    <h1>Fetch HTML Content via Proxy</h1>
+    <textarea id="output" style="width: 100%; height: 400px;" readonly></textarea>
 
     <script>
+        // Hàm lấy tham số từ URL
         function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(param);
         }
 
-        const url = getQueryParam('url');
+        const targetUrl = getQueryParam('url');
+        const corsProxy = 'https://cors-anywhere.herokuapp.com/';
 
-        if (url) {
-            fetch(url)
+        if (targetUrl) {
+            fetch(corsProxy + targetUrl)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                        throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     return response.text();
                 })
-                .then(data => {
-                    document.getElementById('content').textContent = data;
+                .then(htmlString => {
+                    // Hiển thị nội dung HTML dưới dạng string
+                    document.getElementById('output').value = htmlString;
                 })
                 .catch(error => {
-                    document.getElementById('content').textContent = `Error: ${error.message}`;
+                    document.getElementById('output').value = `Error: ${error.message}`;
                 });
         } else {
-            document.getElementById('content').textContent = 'Missing URL parameter.';
+            document.getElementById('output').value = 'Missing URL parameter.';
         }
     </script>
 </body>
