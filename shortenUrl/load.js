@@ -4,6 +4,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const countdownMessage = document.getElementById("countdown-message");
     let timeLeft = 120;
 
+    // Hàm để lấy giá trị của tham số từ URL
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    // Lấy giá trị của tham số `s` từ URL
+    const queryParameter = getQueryParam("s");
+
     startButton.addEventListener("click", function () {
         // Ẩn nút và hiển thị bộ đếm
         startButton.style.display = "none";
@@ -17,8 +26,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (timeLeft <= 0) {
                 clearInterval(countdown);
-                // Redirect to the original link (simulate PHP redirect)
-                window.location.href = "php/redirect.php";
+
+                // Chuyển hướng đến reallink với giá trị của `s`
+                if (queryParameter) {
+                    window.location.href = "reallink?s=" + encodeURIComponent(queryParameter);
+                } else {
+                    alert("Missing parameter 's' in the URL.");
+                }
             }
         }, 1000);
     });
